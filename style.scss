@@ -1,0 +1,146 @@
+@use "sass:map";
+
+@use "macro";
+
+$colors: (
+    accent: hsl(25, 97%, 53%),
+    selected: hsl(217, 12%, 63%),
+    paragraph: hsl(216, 12%, 54%),
+    gradient: rgba(255, 255, 255, 0.02),
+    card-bg: hsl(216, 19%, 15%),
+    bg: hsl(216, 12%, 8%)
+);
+@function col($c) { @return map.get($colors, $c); }
+
+$colors: map.merge($colors, (
+    star-bg: lighten(col(card-bg), 3%),
+    button-bg: lighten(col(card-bg), 5%)
+));
+
+@mixin circle_rules {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+@font-face {
+    @include macro.gfont("Overpass", "wght", 400 700);
+}
+
+body {
+    background-color: col(bg);
+    font-family: "Overpass";
+    font-size: 15px;
+}
+
+// buttons be like "rules for thee but not for me"
+button {
+    cursor: pointer;
+    font-family: "Overpass";
+    font-size: 15px;
+}
+
+#container {
+    box-sizing: border-box;
+    position: absolute;
+    padding: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: col(card-bg)
+        radial-gradient(circle at top, col(gradient), transparent 50%);
+    border-radius: 30px;
+    @include macro.resp(
+        $max-width: 25%,
+        $width: Skip 95%,
+        $border-radius: 20px 15px
+    );
+}
+
+.star-circle {
+    background: url("./images/icon-star.svg") col(star-bg) center no-repeat;
+    margin-bottom: 30px;
+    @include circle_rules();
+}
+
+#button-container {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.circle-button {
+    background-color: col(button-bg);
+    border: none;
+    color: col(selected);
+    font-weight: 500;
+    @include circle_rules();
+}
+
+.circle-button.selected {
+    background-color: col(selected);
+    color: white;
+}
+
+.circle-button:hover {
+    background-color: col(accent);
+    color: white;
+}
+
+#submit-button {
+    background-color: col(accent);
+    border: none;
+    color: white;
+    width: 100%;
+    @include macro.pill(50px);
+}
+
+#submit-button:hover {
+    background-color: white;
+    color: col(accent);
+}
+
+.card-heading {
+    color: white;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.card-text {
+    color: col(paragraph);
+}
+
+#thanks {
+    display: block;
+    width: min-content;
+    margin: auto;
+    margin-bottom: 30px;
+}
+
+#score-display {
+    display: inline-block;
+    background-color: col(button-bg);
+    color: col(accent);
+    text-align: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 30px;
+    @include macro.pill(30px);
+}
+
+#score-inner {
+    line-height: 30px;
+    vertical-align: middle;
+}
+
+.attribution {
+    color: col(paragraph);
+    font-size: 11px;
+    text-align: center;
+}
+
+.attribution a {
+    color: hsl(228, 45%, 44%);
+}
